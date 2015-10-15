@@ -17,7 +17,7 @@ class Customer(object):
             'email': email,
             'address_street': address_street,
             'address_neighborhood': address_neighborhood,
-            'address_zipcode': address_zipcode,
+            'address_zipcode': int(address_zipcode),
             'address_street_number': address_street_number,
             'address_complementary': address_complementary,
             'phone_ddd': phone_ddd,
@@ -30,10 +30,10 @@ class Customer(object):
             if value is None:
                 continue
             elif 'address' in key:
-                new_key = 'customer[address][{key}]'.format(key=key.replace('address_', ''))
+                new_key = 'address[{key}]'.format(key=key.replace('address_', ''))
             elif 'phone' in key:
-                new_key = 'customer[phone][{key}]'.format(key=key.replace('phone_', ''))
+                new_key = 'phone[{key}]'.format(key=key.replace('phone_', ''))
             else:
-                new_key = 'customer[{key}]'.format(key=key)
+                new_key = '{key}'.format(key=key)
             d[new_key] = value
         return d
