@@ -70,9 +70,10 @@ class Subscription(AbstractResource):
         }
         self.customer = customer
 
-        if card_hash:
+        if card_hash is not None:
             self.data['card_hash'] = card_hash
-        else:
+
+        if card_id is not None:
             self.data['card_id'] = card_id
 
         self.data.update(kwargs)
@@ -80,7 +81,7 @@ class Subscription(AbstractResource):
     def get_data(self):
         data = self.data
         if self.customer:
-            data.update(self.customer.get_anti_fraud_data())
+            data.update(self.get_anti_fraud_data())
         return data
 
     def find_by_id(self, id):
@@ -116,3 +117,17 @@ class Subscription(AbstractResource):
             t.handle_response(transaction)
             transactions.append(t)
         return transactions
+
+    def get_anti_fraud_data(self):
+        d = {}
+        for key, value in self.customer.data.items():
+            if value is None:
+                continue
+            elif 'address' in key:
+                new_key = 'customer[address][{key}]'.format(key=key.replace('address_', ''))
+            elif 'phone' in key:
+                new_key = 'customer[phone][{key}]'.format(key=key.replace('phone_', ''))
+            else:
+                new_key = 'customer[{key}]'.format(key=key)
+            d[new_key] = value
+        return d
