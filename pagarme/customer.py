@@ -10,15 +10,14 @@ class Customer(object):
                  address_complementary=None, phone_ddd=None, phone_number=None):
 
         address_zipcode = address_zipcode.replace('.', '').replace('-', '') if address_zipcode else None
-        if not isinstance(document_number, long):
-            document_number = document_number.replace('.', '').replace('-', '') if document_number else None
+        document_number = document_number.replace('.', '').replace('-', '') if document_number else None
         self.data = {
             'name': name,
-            'document_number': int(document_number),
+            'document_number': document_number,
             'email': email,
             'address_street': address_street,
             'address_neighborhood': address_neighborhood,
-            'address_zipcode': int(address_zipcode),
+            'address_zipcode': address_zipcode,
             'address_street_number': address_street_number,
             'address_complementary': address_complementary,
             'phone_ddd': phone_ddd,
