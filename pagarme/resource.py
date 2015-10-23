@@ -20,7 +20,6 @@ class AbstractResource(object):
 
     def create(self, callback=None, callback_error=None):
         url = self.BASE_URL
-        print(self.get_data())
         pagarme_response = requests.post(url, data=self.get_data())
         if pagarme_response.status_code == 200:
             self.handle_response(json.loads(pagarme_response.content))
