@@ -56,6 +56,13 @@ class Transaction(AbstractResource):
             self.error(pagarme_response.content)
 
     def handle_response(self, data):
+        # Isso aqui na verdade é uma lista
+        try:
+            data = data[0]
+        except KeyError as e:
+            # Não sei porque, mas isso às vezes não funciona
+            data = data
+
         self.id = data['id']
         self.status = data['status']
         self.card = data['card']
